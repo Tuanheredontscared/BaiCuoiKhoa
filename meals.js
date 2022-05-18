@@ -15,32 +15,27 @@ searchBtn.addEventListener('click', findMeals)
 
 
 async function fetchMealsApi() {
-  let searchInputTxt = document.getElementById("search-input").value
+  // let searchInputTxt = document.getElementById("search-input").value
   const meals = await fetch(
-    `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchInputTxt}`
+    'https://www.themealdb.com/api/json/v1/1/filter.php?i='
   );
   const body = await meals.json();
   console.log(body);
-  return body ?.meals;
+  return body?.meals;
 
 }
 
 // find meals
-const mealsArray = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
-
-function findMeals() {
+async function findMeals() {
+  const mealsArray = await fetchMealsApi()
   let searchInputTxt = document.getElementById("search-input").value;
   const result = mealsArray.filter(function (a) {
-    return a === searchInputTxt;
+    return a.strMeal.trim().includes(searchInputTxt);
   })
-
+  mealsPrint(result)
 }
 
-// const words = ['spray', 'limit', 'elite', 'exuberant', 'destruction', 'present'];
 
-// const result = words.filter(function (word) { return word.length > 6 });
-
-// console.log(result);
 
 function mealsPrint(meals) {
   let mealsText = "";
@@ -58,24 +53,21 @@ function mealsPrint(meals) {
   });
   mealsList.innerHTML = mealsText;
 }
-
 fetchMealsApi().then(function (meals) {
   mealsPrint(meals)
 });
-
-
-
 
 // get recipe
 async function getMealRecipe(event) {
   event.preventDefault();
   let mealItem = event.target.parentElement.parentElement
+  // console.log(mealItem.dataset)
   const getRecipe = await fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealItem.dataset.id}`)
   const js = await getRecipe.json()
-  createRecipe(js.meals)
+  createRecipe(js.meals[0])
+  // console.log(js.meals)
   console.log(js)
 }
-
 
 function createRecipe(data) {
   let recipeText = `
@@ -95,3 +87,4 @@ function createRecipe(data) {
   mealDetailsContent.innerHTML = recipeText;
   mealDetailsContent.parentElement.classList.add('showRecipe');
 }
+
