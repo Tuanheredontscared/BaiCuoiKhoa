@@ -66,7 +66,10 @@ body {
 .search-btn {
     width: 100%;
 }
-
+iframe{
+    width: 16cm;
+    height: 14cm;
+}
 .search-control {
     padding: 0 1rem;
     font-size: 1.1rem;

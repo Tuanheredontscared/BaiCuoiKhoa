@@ -46,7 +46,7 @@ function mealsPrint(meals) {
         <img src = ${meals.strMealThumb} alt = "food">
     </div>
     <div class = "meal-name">
-        <h3>${meals.strMeal}</h3>
+        <h3 class="nameItems">${meals.strMeal}</h3>
         <a href = "#" class = "recipe-btn">Get Recipe</a>
     </div>
 </div>`;
@@ -86,5 +86,23 @@ function createRecipe(data) {
   `;
   mealDetailsContent.innerHTML = recipeText;
   mealDetailsContent.parentElement.classList.add('showRecipe');
+}
+
+// search/filter
+document.querySelector('#search-input').addEventListener('input', filterList)
+
+function filterList() {
+  const searchInput = document.querySelector('#search-input')
+  const filter = searchInput.value.toLowerCase()
+  const listItems = document.querySelectorAll('.nameItems')
+  listItems.forEach((item) => {
+    let text = item.textContent
+    if (text.toLowerCase().includes(filter.toLowerCase())) {
+      item.style.display = "";
+    }
+    else {
+      item.style.display = 'none';
+    }
+  })
 }
 
